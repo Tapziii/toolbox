@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="A premium, fast, client-side image compressor. Easily compress images to 10MB or any custom limit.">
+    <title>Squeeze | Premium Image Compressor</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="background-effects">
+        <div class="glow-orb orb-1"></div>
+        <div class="glow-orb orb-2"></div>
+    </div>
+
+    <main class="container">
+        <header>
+            <h1>Squeeze</h1>
+            <p>Smart, private image compression directly in your browser.</p>
+        </header>
+
+        <section class="settings-panel glass-panel">
+            <div class="setting-group">
+                <label for="size-preset">Target Max Size</label>
+                <div class="size-selector-wrapper">
+                    <select id="size-preset">
+                        <option value="8">8 MB (Discord Classic)</option>
+                        <option value="10" selected>10 MB (Discord Free)</option>
+                        <option value="25">25 MB (Discord Nitro)</option>
+                        <option value="50">50 MB</option>
+                        <option value="custom">Custom...</option>
+                    </select>
+                    <div id="custom-size-wrapper" class="hidden">
+                        <input type="number" id="size-value-input" class="number-input" value="10" min="1"> <span class="unit-label">MB</span>
+                    </div>
+                </div>
+            </div>
+            <div class="setting-group">
+                <label for="format-select">Output Format</label>
+                <select id="format-select">
+                    <option value="auto">Auto (Keep Original)</option>
+                    <option value="image/jpeg">JPEG</option>
+                    <option value="image/png">PNG</option>
+                    <option value="image/webp">WebP</option>
+                </select>
+            </div>
+        </section>
+
+        <section class="upload-area glass-panel" id="drop-zone">
+            <input type="file" id="file-input" accept="image/png, image/jpeg, image/webp" hidden>
+            <div class="upload-content">
+                <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="upload-icon"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                <h2>Drag & Drop your image</h2>
+                <p>or <span class="text-btn">browse</span> from your device</p>
+                <span class="supported-formats">Supports JPG, PNG, WebP</span>
+            </div>
+        </section>
+
+        <section class="processing-area glass-panel hidden" id="processing-zone">
+            <div class="loader"></div>
+            <h3 id="processing-status">Compressing...</h3>
+            <div class="progress-bar-container">
+                <div class="progress-bar" id="progress-bar"></div>
+            </div>
+        </section>
+
+        <section class="result-area glass-panel hidden" id="result-zone">
+            <div class="stats-container">
+                <div class="stat-box">
+                    <span class="stat-label">Original</span>
+                    <span class="stat-value" id="original-size">-- MB</span>
+                </div>
+                <div class="stat-divider">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                </div>
+                <div class="stat-box">
+                    <span class="stat-label">Compressed</span>
+                    <span class="stat-value highlight" id="compressed-size">-- MB</span>
+                </div>
+            </div>
+            
+            <div class="preview-container">
+                <img id="preview-image" src="" alt="Compressed Preview">
+            </div>
+
+            <div class="action-buttons">
+                <button id="download-btn" class="primary-btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                    Download Image
+                </button>
+                <button id="reset-btn" class="secondary-btn">Compress Another</button>
+            </div>
+        </section>
+    </main>
+
+    <script src="app.js"></script>
+</body>
+</html>

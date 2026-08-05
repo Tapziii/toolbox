@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Text Case Converter & Reverser</title>
+    <meta name="description" content="A premium tool to convert text case, reverse text, and count words across multiple languages.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-container">
+        <header class="app-header">
+            <div class="header-top">
+                <h1 id="title" data-i18n="title">Accidentally left the caps lock on and typed something, but can't be bothered to start again and retype it all?</h1>
+                <div class="lang-selector-container">
+                    <select id="langSwitcher" class="lang-switcher">
+                        <option value="en" selected>English</option>
+                        <option value="he">עברית (Hebrew)</option>
+                        <option value="ar">العربية (Arabic)</option>
+                        <option value="es">Español (Spanish)</option>
+                        <option value="fr">Français (French)</option>
+                        <option value="de">Deutsch (German)</option>
+                        <option value="zh">中文 (Chinese)</option>
+                        <option value="ja">日本語 (Japanese)</option>
+                        <option value="ko">한국어 (Korean)</option>
+                    </select>
+                </div>
+            </div>
+            <p id="subtitle" data-i18n="subtitle">Simply enter your text and convert it to uppercase, lowercase, title case, and more.</p>
+        </header>
+
+        <main class="main-content">
+            <div class="textarea-container">
+                <textarea id="textInput" data-i18n-placeholder="placeholder" placeholder="Type or paste your content here"></textarea>
+                
+                <div class="toolbar-bottom">
+                    <div class="action-buttons">
+                        <button class="icon-btn" id="btnCopy" aria-label="Copy" title="Copy">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                        </button>
+                        <button class="icon-btn" id="btnShare" aria-label="Share" title="Share">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
+                        </button>
+                        <button class="icon-btn" id="btnDownload" aria-label="Download" title="Download">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                        </button>
+                        <button class="icon-btn" id="btnClear" aria-label="Clear" title="Clear">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                        </button>
+                    </div>
+                    
+                    <div class="stats-container">
+                        <span id="charCountLabel" data-i18n="charCount">Character Count</span>: <span id="charCount">0</span> | 
+                        <span id="wordCountLabel" data-i18n="wordCount">Word Count</span>: <span id="wordCount">0</span> | 
+                        <span id="lineCountLabel" data-i18n="lineCount">Line Count</span>: <span id="lineCount">0</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="controls-container">
+                <div class="format-buttons">
+                    <button class="format-btn" id="btnSentence">
+                        <span class="badge badge-sentence">Sc</span>
+                        <span data-i18n="btnSentence">Sentence case</span>
+                    </button>
+                    <button class="format-btn" id="btnLower">
+                        <span class="badge badge-lower">lc</span>
+                        <span data-i18n="btnLower">lower case</span>
+                    </button>
+                    <button class="format-btn" id="btnUpper">
+                        <span class="badge badge-upper">UC</span>
+                        <span data-i18n="btnUpper">UPPER CASE</span>
+                    </button>
+                    <button class="format-btn" id="btnCapitalized">
+                        <span class="badge badge-capitalized">CC</span>
+                        <span data-i18n="btnCapitalized">Capitalized Case</span>
+                    </button>
+                    <button class="format-btn" id="btnTitle">
+                        <span class="badge badge-title">TC</span>
+                        <span data-i18n="btnTitle">Title Case</span>
+                    </button>
+                    <button class="format-btn" id="btnInverse">
+                        <span class="badge badge-inverse">iC</span>
+                        <span data-i18n="btnInverse">InVeRsE CaSe</span>
+                    </button>
+                    <button class="format-btn" id="btnReverse">
+                        <span class="badge badge-reverse">RT</span>
+                        <span data-i18n="btnReverse">Reverse Text</span>
+                    </button>
+                </div>
+                
+                <a href="#" class="buy-coffee-btn" aria-label="Buy me a coffee">
+                    <span data-i18n="buyCoffee">Buy me a</span>
+                    <svg class="coffee-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8h1a4 4 0 0 1 0 8h-1"></path><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"></path><line x1="6" y1="1" x2="6" y2="4"></line><line x1="10" y1="1" x2="10" y2="4"></line><line x1="14" y1="1" x2="14" y2="4"></line></svg>
+                </a>
+            </div>
+        </main>
+    </div>
+    
+    <!-- Notification Toast -->
+    <div id="toast" class="toast">Action completed</div>
+
+    <script src="script.js"></script>
+</body>
+</html>

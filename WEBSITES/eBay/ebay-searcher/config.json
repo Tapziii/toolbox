@@ -1,0 +1,20 @@
+{
+  "check_interval_seconds": 300,
+  "marketplace_id": "EBAY_US",
+  "searches": [
+    {
+      "name": "Vintage Mechanical Watches",
+      "query": "vintage mechanical watch",
+      "max_price": 200.0,
+      "min_price": 20.0,
+      "currency": "USD"
+    },
+    {
+      "name": "Refurbished ThinkPad",
+      "query": "ThinkPad T480",
+      "max_price": 250.0,
+      "min_price": null,
+      "currency": "USD"
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+{
+    "Canon Powershot": {
+        "query": "Canon Powershot",
+        "minPrice": "",
+        "maxPrice": "100",
+        "includeShipping": true,
+        "category": "31388",
+        "condition": "used",
+        "sort": "bestMatch",
+        "marketplace": "EBAY_US",
+        "format": "all",
+        "excludeKeywords": [],
+        "excludeCountries": [
+            "United States",
+            "United Kingdom"
+        ]
+    }
+}
