@@ -1,11 +1,21 @@
 import os
 import sys
+import importlib.util
 
-# Insert the ebay-searcher path so we can import its app
-ebay_path = os.path.join(os.path.dirname(__file__), 'eBay', 'ebay-searcher')
-sys.path.insert(0, ebay_path)
+# Load the ebay app module directly to avoid circular imports
+# since this file is also named app.py
+ebay_path = os.path.join(os.path.dirname(__file__), 'eBay', 'ebay-searcher', 'app.py')
 
-from app import app
+spec = importlib.util.spec_from_file_location("ebay_app_module", ebay_path)
+ebay_module = importlib.util.module_from_spec(spec)
+sys.modules["ebay_app_module"] = ebay_module
+
+# We also need to add ebay-searcher to sys.path so its internal imports (like ebay_client) work
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'eBay', 'ebay-searcher'))
+
+spec.loader.exec_module(ebay_module)
+app = ebay_module.app
+
 from flask import send_from_directory, redirect
 
 BASE_DIR = os.path.dirname(__file__)
@@ -28,5 +38,4 @@ def serve_static_file(project, filename):
     return "Not found", 404
 
 if __name__ == '__main__':
-    # When running locally, it defaults to port 5000
     app.run(debug=True, host='0.0.0.0', port=5000)
