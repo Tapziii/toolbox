@@ -34,7 +34,7 @@ def get_signature(params: dict) -> str:
     """Return a unique MD5 hash for a given search parameter dictionary."""
     return hashlib.md5(json.dumps(params, sort_keys=True).encode()).hexdigest()
 
-@app.route("/")
+@app.route("/ebay/")
 def index():
     """Serve the main search page."""
     return render_template("index.html")
