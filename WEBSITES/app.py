@@ -21,12 +21,16 @@ from flask import send_from_directory, redirect
 BASE_DIR = os.path.dirname(__file__)
 STATIC_DIRS = ['10mb', 'Altimeter', 'CAPS', 'ColorPicker', 'Toolbox']
 
+@app.route('/')
+def serve_root():
+    return send_from_directory(os.path.join(BASE_DIR, 'Toolbox'), 'index.html')
+
 @app.route('/<project>/')
 def serve_static_index(project):
     if project in STATIC_DIRS:
         return send_from_directory(os.path.join(BASE_DIR, project), 'index.html')
     elif project.lower() == 'ebay':
-        return redirect('/')
+        return redirect('/ebay/')
     return "Not found", 404
 
 @app.route('/<project>/<path:filename>')
@@ -34,7 +38,7 @@ def serve_static_file(project, filename):
     if project in STATIC_DIRS:
         return send_from_directory(os.path.join(BASE_DIR, project), filename)
     elif project.lower() == 'ebay':
-        return redirect('/')
+        return redirect('/ebay/')
     return "Not found", 404
 
 if __name__ == '__main__':
