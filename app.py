@@ -21,7 +21,7 @@ import uuid
 import werkzeug.utils
 
 BASE_DIR = os.path.dirname(__file__)
-STATIC_DIRS = ['10mb', 'Altimeter', 'CAPS', 'ColorPicker', 'Toolbox', 'FileDrop']
+STATIC_DIRS = ['10mb', 'Altimeter', 'CAPS', 'ColorPicker', 'Toolbox', 'FileDrop', 'QuickConvert']
 
 @app.route('/')
 def serve_root():
