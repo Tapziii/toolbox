@@ -19,9 +19,14 @@ app = ebay_module.app
 from flask import send_from_directory, redirect, request, jsonify, send_file
 import uuid
 import werkzeug.utils
+import threading
+try:
+    import yt_dlp
+except ImportError:
+    yt_dlp = None
 
 BASE_DIR = os.path.dirname(__file__)
-STATIC_DIRS = ['10mb', 'Altimeter', 'CAPS', 'ColorPicker', 'Toolbox', 'FileDrop', 'QuickConvert']
+STATIC_DIRS = ['10mb', 'Altimeter', 'CAPS', 'ColorPicker', 'Toolbox', 'FileDrop', 'QuickConvert', 'YTDownloader']
 
 @app.route('/')
 def serve_root():
@@ -183,6 +188,94 @@ def filedrop_transfer_download(transfer_id):
         # We leave it on disk for now, could be cleaned up by a cron task later
         TRANSFERS.pop(transfer_id, None)
         return send_file(file_path, as_attachment=True)
+
+# --- YT Downloader API ---
+import re
+
+YT_DOWNLOADS = {}
+YT_DOWNLOAD_DIR = os.path.join(BASE_DIR, 'uploads', 'ytdl')
+os.makedirs(YT_DOWNLOAD_DIR, exist_ok=True)
+
+@app.route('/api/ytdl/start', methods=['POST'])
+def ytdl_start():
+    if not yt_dlp:
+        return jsonify({'error': 'yt-dlp is not installed on the server.'}), 500
+        
+    url = request.json.get('url')
+    quality = request.json.get('quality', 'best')
+    download_id = str(uuid.uuid4())
+    
+    YT_DOWNLOADS[download_id] = {
+        'status': 'loading',
+        'progress': 0,
+        'message': 'Initializing...',
+        'filename': None
+    }
+    
+    def progress_hook(d):
+        if d['status'] == 'downloading':
+            percent_str = d.get('_percent_str', '0%').replace('%', '').strip()
+            percent_str = re.sub(r'\x1b\[[0-9;]*m', '', percent_str)
+            try:
+                percent = float(percent_str)
+            except:
+                percent = 0
+                
+            eta = d.get('_eta_str', 'Unknown')
+            eta = re.sub(r'\x1b\[[0-9;]*m', '', eta)
+            
+            YT_DOWNLOADS[download_id]['progress'] = percent
+            YT_DOWNLOADS[download_id]['message'] = f'Downloading... {percent:.1f}% (ETA: {eta})'
+            
+        elif d['status'] == 'finished':
+            YT_DOWNLOADS[download_id]['message'] = 'Processing and finalizing video (this may take a moment)...'
+
+    def download_thread():
+        try:
+            ydl_opts = {
+                'outtmpl': os.path.join(YT_DOWNLOAD_DIR, download_id + '_%(title)s.%(ext)s'),
+                'progress_hooks': [progress_hook],
+                'quiet': True,
+                'no_warnings': True,
+            }
+            if quality == 'audio':
+                ydl_opts['format'] = 'bestaudio/best'
+                ydl_opts['postprocessors'] = [{
+                    'key': 'FFmpegExtractAudio',
+                    'preferredcodec': 'mp3',
+                    'preferredquality': '192',
+                }]
+            else:
+                ydl_opts['format'] = 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best'
+                
+            with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+                info = ydl.extract_info(url, download=True)
+                filename = ydl.prepare_filename(info)
+                if quality == 'audio':
+                    filename = os.path.splitext(filename)[0] + '.mp3'
+                
+                YT_DOWNLOADS[download_id]['status'] = 'success'
+                YT_DOWNLOADS[download_id]['message'] = 'Video processed successfully! Download starting...'
+                YT_DOWNLOADS[download_id]['progress'] = 100
+                YT_DOWNLOADS[download_id]['filename'] = os.path.basename(filename)
+                
+        except Exception as e:
+            YT_DOWNLOADS[download_id]['status'] = 'error'
+            YT_DOWNLOADS[download_id]['message'] = str(e)
+            
+    threading.Thread(target=download_thread).start()
+    return jsonify({'download_id': download_id})
+
+@app.route('/api/ytdl/progress/<download_id>')
+def ytdl_progress(download_id):
+    return jsonify(YT_DOWNLOADS.get(download_id, {'status': 'error', 'message': 'Not found'}))
+
+@app.route('/api/ytdl/file/<download_id>')
+def ytdl_file(download_id):
+    if download_id not in YT_DOWNLOADS or not YT_DOWNLOADS[download_id].get('filename'):
+        return "Not found", 404
+    filename = YT_DOWNLOADS[download_id]['filename']
+    return send_file(os.path.join(YT_DOWNLOAD_DIR, filename), as_attachment=True)
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=5000)
