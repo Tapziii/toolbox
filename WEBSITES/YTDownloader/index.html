@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YT Downloader</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Top-left back button -->
+    <a href="../Toolbox/" class="back-btn">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+        </svg>
+        Back to Hub
+    </a>
+
+    <div class="container">
+        <div class="header">
+            <h1>YT Downloader</h1>
+            <p>Download YouTube videos natively in high quality, powered by Python.</p>
+        </div>
+
+        <div class="glass-panel downloader-card">
+            <form id="download-form" class="input-group">
+                <label for="url">YouTube Video URL</label>
+                <div class="input-wrapper">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="link-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+                        <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+                    </svg>
+                    <input type="text" id="url" class="url-input" placeholder="https://www.youtube.com/watch?v=..." autocomplete="off">
+                </div>
+
+                <label for="quality">Quality Options</label>
+                <div class="input-wrapper">
+                    <select id="quality" class="url-input select-input">
+                        <option value="best">Best Quality (1080p+)</option>
+                        <option value="1080p">1080p</option>
+                        <option value="720p">720p</option>
+                        <option value="480p">480p</option>
+                        <option value="audio">Audio Only (MP3)</option>
+                    </select>
+                </div>
+                
+                <button type="submit" id="submit-btn" class="submit-btn">
+                    <span id="btn-text">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                            <polyline points="7 10 12 15 17 10"></polyline>
+                            <line x1="12" y1="15" x2="12" y2="3"></line>
+                        </svg>
+                        Download
+                    </span>
+                    <div id="btn-spinner" class="spinner hidden"></div>
+                </button>
+            </form>
+
+            <div id="status-container" class="status-container hidden">
+                <div class="status-title">
+                    <span id="status-badge" class="status-badge loading">Please wait...</span>
+                </div>
+                
+                <p id="status-text" class="status-text">Initializing connection...</p>
+                
+                <div id="progress-container" class="progress-container hidden">
+                    <div id="progress-bar" class="progress-bar" style="width: 0%"></div>
+                </div>
+
+                <a id="download-link" href="#" class="download-link hidden" target="_blank">
+                    Click here to save your file
+                </a>
+            </div>
+        </div>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>
