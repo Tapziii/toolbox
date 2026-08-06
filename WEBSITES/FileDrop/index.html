@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FileDrop - AirDrop Clone</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+
+    <div class="app-container">
+        <header>
+            <a href="../Toolbox/" class="back-link">← Back to Hub</a>
+            <h1>FileDrop</h1>
+            <div class="device-identity">
+                <p>Your Device: <strong id="my-device-name">Connecting...</strong></p>
+                <button id="edit-name-btn" class="icon-btn" title="Edit Name">✎</button>
+            </div>
+            <div id="edit-name-container" class="hidden">
+                <input type="text" id="name-input" maxlength="20">
+                <button id="save-name-btn" class="btn small-btn">Save</button>
+            </div>
+        </header>
+
+        <main class="dashboard">
+            <!-- Radar Area -->
+            <div class="radar-section">
+                <div class="radar-ring"></div>
+                <h2>Nearby Devices</h2>
+                <div id="devices-list" class="devices-list">
+                    <p class="scanning-text">Scanning for devices on the network...</p>
+                </div>
+            </div>
+
+            <!-- Send Action Area (Hidden until a device is clicked) -->
+            <div id="send-panel" class="panel hidden mt-2">
+                <h3>Send to <span id="target-device-name" class="highlight">Device</span></h3>
+                
+                <div class="tab-container mt-1">
+                    <button class="tab-btn active" data-target="send-file-tab">Send File/Media</button>
+                    <button class="tab-btn" data-target="send-text-tab">Send Text/Link</button>
+                </div>
+
+                <div id="send-file-tab" class="tab-content active">
+                    <div id="drop-zone" class="drop-zone">
+                        <div class="upload-icon">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path></svg>
+                        </div>
+                        <h2>Drag & Drop to send</h2>
+                        <input type="file" id="file-input" hidden>
+                    </div>
+                </div>
+
+                <div id="send-text-tab" class="tab-content hidden">
+                    <textarea id="text-input" placeholder="Type or paste text/link here..."></textarea>
+                    <button id="send-text-btn" class="btn full-width">Send Text</button>
+                </div>
+                
+                <p id="send-status" class="polling-text hidden mt-1">Waiting for acceptance...</p>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modals -->
+    <div id="incoming-modal" class="modal">
+        <div class="modal-content">
+            <h2 id="incoming-title">Incoming Transfer</h2>
+            <p id="incoming-desc">Someone wants to send you a file.</p>
+            <div class="modal-actions">
+                <button id="accept-btn" class="btn">Accept</button>
+                <button id="reject-btn" class="btn outline-btn">Decline</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="result-modal" class="modal">
+        <div class="modal-content text-center result-modal-content">
+            <h2>Transfer Complete!</h2>
+            <div id="result-file-ui" class="hidden result-inner">
+                <p>Your file is ready.</p>
+                <a id="download-anchor" href="#" class="btn download-btn mt-1" download>Download File</a>
+            </div>
+            <div id="result-text-ui" class="hidden result-inner">
+                <textarea id="received-text" readonly></textarea>
+                <button id="copy-btn" class="btn full-width">Copy to Clipboard</button>
+            </div>
+            <button id="close-result-btn" class="btn outline-btn mt-2 full-width">Close</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
