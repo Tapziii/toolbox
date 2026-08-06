@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QuickConvert</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+
+    <div class="app-container">
+        <header>
+            <a href="../Toolbox/" class="back-link">← Back to Hub</a>
+            <h1>QuickConvert</h1>
+            <p>Real-time Universal Converter</p>
+        </header>
+
+        <main class="dashboard">
+            <!-- Category Tabs -->
+            <div class="tabs">
+                <button class="tab-btn active" data-category="currency">Currency</button>
+                <button class="tab-btn" data-category="weight">Weight</button>
+                <button class="tab-btn" data-category="length">Length</button>
+                <button class="tab-btn" data-category="temp">Temp</button>
+                <button class="tab-btn" data-category="speed">Speed</button>
+            </div>
+
+            <!-- Conversion Area -->
+            <div class="converter-box">
+                <div class="input-group">
+                    <input type="number" id="input-top" placeholder="0" step="any">
+                    <select id="select-top"></select>
+                </div>
+
+                <div class="swap-icon" id="swap-btn">⇅</div>
+
+                <div class="input-group">
+                    <input type="number" id="input-bottom" placeholder="0" step="any">
+                    <select id="select-bottom"></select>
+                </div>
+            </div>
+
+            <p id="status-text" class="status-text">Fetching live rates...</p>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
