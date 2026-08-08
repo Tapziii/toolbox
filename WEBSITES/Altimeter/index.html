@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Altimeter</title>
+  <meta name="description" content="Offline-capable mobile altimeter app with session tracking.">
+  <link rel="icon" type="image/svg+xml" href="icon.svg">
+  <link rel="apple-touch-icon" href="icon.svg">
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#0f0f13">
+  <link rel="stylesheet" href="style.css">
+  
+  <!-- Preconnect to Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Hub Back Button -->
+    <a href="../Toolbox/" class="hub-back-btn">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+        </svg>
+        Back to Hub
+    </a>
+    <style>
+        .hub-back-btn { position: fixed; top: 1rem; left: 1rem; display: flex; align-items: center; gap: 0.5rem; color: #94a3b8; text-decoration: none; font-size: 1rem; transition: all 0.3s ease; background: rgba(255, 255, 255, 0.05); padding: 0.5rem 1rem; border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.1); z-index: 9999; font-family: sans-serif; }
+        .hub-back-btn:hover { color: #f8fafc; background: rgba(255, 255, 255, 0.1); transform: translateX(-4px); }
+        .hub-back-btn svg { width: 20px; height: 20px; }
+    </style>
+  <div class="app-container">
+    <header>
+      <h1>Altimeter</h1>
+      <div class="header-controls">
+        <button id="history-btn" class="glass-btn icon-btn">🕒</button>
+        <button id="unit-toggle" class="glass-btn">FT</button>
+      </div>
+    </header>
+
+    <main>
+      <div class="status-indicator" id="gps-indicator">
+        <div id="gps-status" class="status-dot searching"></div>
+        <span id="gps-text">Acquiring GPS...</span>
+      </div>
+
+      <div class="primary-display glass-card">
+        <div class="value-container">
+          <span id="altitude-val" class="huge-text">--</span>
+          <span id="altitude-unit" class="unit-text">FT</span>
+        </div>
+        <div class="label">CURRENT ALTITUDE</div>
+      </div>
+
+      <div class="secondary-grid">
+        <div class="glass-card stat-card">
+          <div class="stat-icon">⏱️</div>
+          <div class="stat-value" id="timer-val">00:00:00</div>
+          <div class="label">SESSION TIME</div>
+        </div>
+
+        <div class="glass-card stat-card">
+          <div class="stat-icon">↕️</div>
+          <div class="stat-value"><span id="vspeed-val">0</span> <span id="vspeed-unit" class="unit-text-sm">FT/M</span></div>
+          <div class="label">VERT. SPEED</div>
+        </div>
+
+        <div class="glass-card stat-card">
+          <div class="stat-icon">🔼</div>
+          <div class="stat-value"><span id="max-alt-val">--</span> <span class="unit-text-sm maxmin-unit">FT</span></div>
+          <div class="label">HIGHEST</div>
+        </div>
+
+        <div class="glass-card stat-card">
+          <div class="stat-icon">🔽</div>
+          <div class="stat-value"><span id="min-alt-val">--</span> <span class="unit-text-sm maxmin-unit">FT</span></div>
+          <div class="label">LOWEST</div>
+        </div>
+      </div>
+
+      <div class="controls">
+        <button id="start-btn" class="glass-btn primary">Start Session</button>
+        <button id="stop-btn" class="glass-btn danger hidden">End Session</button>
+      </div>
+    </main>
+  </div>
+
+  <!-- Save Session Modal -->
+  <div id="save-modal" class="modal-overlay hidden">
+    <div class="modal-content glass-card">
+      <div class="modal-header">
+        <h2>Save Session</h2>
+      </div>
+      <div style="width:100%; display:flex; flex-direction:column; gap:16px; margin: 16px 0;">
+        <input type="text" id="session-name-input" class="glass-input" placeholder="Enter session name (e.g. Morning Hike)" />
+      </div>
+      <div style="display:flex; gap:12px; width:100%;">
+        <button id="discard-session-btn" class="glass-btn danger" style="flex:1;">Discard</button>
+        <button id="save-session-btn" class="glass-btn primary" style="flex:1; padding: 10px;">Save</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- History Modal -->
+  <div id="history-modal" class="modal-overlay hidden">
+    <div class="modal-content glass-card">
+      <div class="modal-header">
+        <h2>Past Sessions</h2>
+        <button id="close-history" class="glass-btn icon-btn">✕</button>
+      </div>
+      <div id="history-list" class="history-list">
+        <!-- Sessions will be injected here by JS -->
+      </div>
+      <button id="clear-history" class="glass-btn danger">Clear All History</button>
+    </div>
+  </div>
+  <script src="main.js"></script>
+</body>
+</html>
+
