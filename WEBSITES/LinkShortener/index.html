@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tap.zi Link Shortener</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <a href="../Toolbox/" class="hub-back-btn">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+        </svg>
+        Back to Hub
+    </a>
+
+    <div class="app-container">
+        <header class="app-header">
+            <h1>Tap.zi</h1>
+            <p>Paste a long URL below to create a lightning-fast short link.</p>
+        </header>
+
+        <main>
+            <div class="shortener-box">
+                <form id="shortener-form">
+                    <div class="input-group">
+                        <input type="url" id="long-url" placeholder="https://example.com/very/long/path/to/something" required>
+                        <button type="submit" id="shorten-btn">Shorten</button>
+                    </div>
+                </form>
+                <div id="result-container" class="result-container hidden">
+                    <p class="result-label">Your Tap.zi link is ready!</p>
+                    <div class="result-box">
+                        <input type="text" id="short-url" readonly>
+                        <button id="copy-btn">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+                            </svg>
+                            Copy
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="history-section">
+                <h2>Recent Links</h2>
+                <div id="history-list" class="history-list">
+                    <!-- History items will be injected here -->
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
