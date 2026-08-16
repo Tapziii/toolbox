@@ -26,7 +26,7 @@ except ImportError:
     yt_dlp = None
 
 BASE_DIR = os.path.dirname(__file__)
-STATIC_DIRS = ['10mb', 'Altimeter', 'CAPS', 'ColorPicker', 'Toolbox', 'FileDrop', 'QuickConvert', 'YTDownloader']
+STATIC_DIRS = ['10mb', 'Altimeter', 'CAPS', 'ColorPicker', 'Toolbox', 'FileDrop', 'QuickConvert', 'YTDownloader', 'LinkShortener']
 
 @app.route('/')
 def serve_root():
@@ -276,6 +276,60 @@ def ytdl_file(download_id):
         return "Not found", 404
     filename = YT_DOWNLOADS[download_id]['filename']
     return send_file(os.path.join(YT_DOWNLOAD_DIR, filename), as_attachment=True)
+
+# --- Tap.zi Link Shortener API ---
+import json
+import string
+
+LINKS_FILE = os.path.join(BASE_DIR, 'uploads', 'links.json')
+
+def load_links():
+    if os.path.exists(LINKS_FILE):
+        try:
+            with open(LINKS_FILE, 'r') as f:
+                return json.load(f)
+        except:
+            return {}
+    return {}
+
+def save_links(links):
+    with open(LINKS_FILE, 'w') as f:
+        json.dump(links, f)
+
+@app.route('/api/shorten', methods=['POST'])
+def shorten_link():
+    long_url = request.json.get('url')
+    if not long_url:
+        return jsonify({'error': 'No URL provided'}), 400
+        
+    if not long_url.startswith(('http://', 'https://')):
+        long_url = 'https://' + long_url
+        
+    links = load_links()
+    
+    characters = string.ascii_letters + string.digits
+    for _ in range(10):
+        short_id = ''.join(random.choice(characters) for _ in range(5))
+        if short_id not in links:
+            break
+            
+    links[short_id] = {
+        'url': long_url,
+        'clicks': 0,
+        'created_at': time.time()
+    }
+    
+    save_links(links)
+    return jsonify({'success': True, 'short_id': short_id, 'url': long_url})
+
+@app.route('/s/<short_id>')
+def redirect_short_link(short_id):
+    links = load_links()
+    if short_id in links:
+        links[short_id]['clicks'] = links[short_id].get('clicks', 0) + 1
+        save_links(links)
+        return redirect(links[short_id]['url'])
+    return "Link not found", 404
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=5000)
